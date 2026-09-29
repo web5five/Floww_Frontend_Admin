@@ -1,19 +1,19 @@
 <div align="center">
 
-# 🌊 Floww Client
+# 🌊 Floww Admin
 
-### Your request. Your call. Your flow.
+### The control room behind the flow.
 
-**An AI-assisted trading experience where every proposal stays in your hands.**
+**A workspace for monitoring and managing Floww operations.**
 
-[![Status](https://img.shields.io/badge/Status-Foundation%20in%20Progress-4261FF?style=for-the-badge)](#current-state)
-[![Client](https://img.shields.io/badge/Floww-Client-FFFF5C?style=for-the-badge&labelColor=1E1E1E)](#what-is-floww-client)
+[![Status](https://img.shields.io/badge/Status-In%20Progress-4261FF?style=for-the-badge)](#current-state)
+[![Admin](https://img.shields.io/badge/Floww-Admin-FFFF5C?style=for-the-badge&labelColor=1E1E1E)](#what-is-floww-admin)
 
 <br />
 
-### 🔗 Live Demo
+### 🔗 Live Admin
 
-<!-- Add the deployed client URL when it is available. -->
+<!-- Add the deployed admin URL when it is available. -->
 **Coming soon** · [Add live URL here](#)
 
 <br />
@@ -24,52 +24,49 @@
 
 ---
 
-## ✨ What is Floww Client?
+## ✨ What is Floww Admin?
 
-Floww Client is the user-facing application for requesting, reviewing, and following an AI-assisted trade.
+Floww Admin is the operations workspace for the Floww platform.
 
-It is designed to keep the user informed and in control at every step:
+It is intended to give authorized operators a clear view of platform activity and the tools needed to support the user journey—from request processing through completion and recovery.
 
-**Request → Delegation → Wallet Approval → Progress → Result → Recovery**
-
-> 🛡️ The client should make consequential actions clear, visible, and intentional.
+> 🔐 Admin access and actions should be limited to authorized operators and handled with care.
 
 ---
 
-## 🧭 The User Journey
+## 🧭 Admin Responsibilities
 
-| Step | Experience |
+| Area | Purpose |
 |---|---|
-| 📝 **Request** | The user describes what they want to do. |
-| 🤝 **Delegation** | The user reviews and confirms the mandate before work begins. |
-| 🔐 **Wallet approval** | The user reviews the transaction and approves it with their wallet. |
-| ⏳ **Progress** | The client shows the current state while the request is being processed. |
-| ✅ **Result** | The user sees the outcome and relevant details. |
-| 🧰 **Recovery** | When something fails or needs attention, the client explains what happened and what to do next. |
+| 📊 **Overview** | Review platform activity and operational status. |
+| 📝 **Requests** | Inspect incoming user requests and their current state. |
+| 🤝 **Mandates** | Review delegation details and related processing status. |
+| 📦 **Orders** | Track quote selection and order progress. |
+| 🧰 **Exceptions & recovery** | Find requests that need attention and support their recovery. |
+| 👤 **Access control** | Make administrative capabilities available only to authorized users. |
 
 ---
 
 ## 🚧 Current State
 
-This repository currently contains shared agent instructions and issue/PR templates.
+<!-- Update this section to reflect what is implemented in this repository. -->
+**Implementation status: to be confirmed.**
 
-**The application is not implemented yet.** Application source, dependency lock and build wrapper, Docker runtime, and application CI have not been added. This repository foundation is not a working client component.
+Add a concise summary here describing the current application source, supported runtime, build and test setup, Docker runtime, and CI status.
 
 ---
 
 ## 🗺️ Roadmap
 
-The client foundation will grow into a working application through small, verifiable steps:
-
+- [ ] Confirm the admin user roles and access boundaries.
 - [ ] Establish the application structure and supported runtime.
 - [ ] Pin dependencies and provide a reproducible installation flow.
 - [ ] Add placeholder-only environment variable examples.
-- [ ] Build the request and mandate confirmation experience.
-- [ ] Add wallet approval and transaction status screens.
-- [ ] Show progress, results, and actionable recovery states.
+- [ ] Implement the operational overview and request/order views.
+- [ ] Add access control for administrative actions.
 - [ ] Add a real build and test workflow.
 - [ ] Verify startup and health in the intended environment.
-- [ ] Deploy the client and add its live URL above.
+- [ ] Deploy the admin app and add its live URL above.
 
 ---
 
@@ -86,7 +83,7 @@ The client foundation will grow into a working application through small, verifi
 
 ## 🏗️ Architecture Notes
 
-Redis, pgvector, Kafka, Eureka, and Config Server are deferred baseline services. Do not add them just to populate an empty repository. Add only the dependencies required by an implemented client feature.
+Redis, pgvector, Kafka, Eureka, and Config Server are deferred baseline services. Do not add them just to populate an empty repository. Add only the dependencies required by an implemented admin feature.
 
 Keep secrets and private team sources out of Git.
 
@@ -98,12 +95,12 @@ Keep secrets and private team sources out of Git.
 |---|---|
 | 🌐 Integration hub | [web5five/Floww](https://github.com/web5five/Floww) |
 | ⚙️ Server integration issue | [Floww_Server — Issue #1](https://github.com/web5five/Floww_Server/issues/1) |
-| 🚀 Live client | **Coming soon** · [Add live URL here](#) |
+| 🚀 Live admin | **Coming soon** · [Add live URL here](#) |
 
 ---
 
 <div align="center">
 
-### Clear choices. Visible progress. Your flow. 🌊
+### Better visibility. Smoother operations. 🌊
 
 </div>
