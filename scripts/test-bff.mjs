@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { createServer } from "node:http";
+import { createServer, request as httpRequest } from "node:http";
 import { setTimeout as delay } from "node:timers/promises";
 
 const token = "fixture.header.signature";
@@ -65,6 +65,15 @@ try {
   assert.equal(result.status, 400);
   result = await fetch(`${root}/api/session`, { method: "POST", headers: { Origin: root, "Content-Type": "application/json" }, body: body + " ".repeat(4200) });
   assert.equal(result.status, 400);
+  const chunkedStatus = await new Promise((resolve, reject) => {
+    const request = httpRequest(`${root}/api/session`, { method: "POST", headers: { Origin: root, "Content-Type": "application/json", "Transfer-Encoding": "chunked" } }, response => {
+      response.resume(); response.on("end", () => resolve(response.statusCode));
+    });
+    request.on("error", reject);
+    request.write(body);
+    request.end(" ".repeat(4200));
+  });
+  assert.equal(chunkedStatus, 400);
   assert.equal(upstreamCalls, 0);
 
   signInMode = "user";
