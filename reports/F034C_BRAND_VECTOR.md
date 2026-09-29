@@ -1,5 +1,9 @@
 # F034C Floww brand vector restoration / Floww 브랜드 벡터 복원
 
+## Controller integration update — 2026-09-30 08:51 KST
+
+The controller independently reviewed the native SVG paths/gradients and header change, then verified a clean `npm ci`, standard `npm run build`, `npm run lint`, and `npm run test:bff` on pinned Node 24.19.0. All passed; the BFF checks cover authentication, role/bounds, redirect refusal, cookie/bypass isolation and GET-only access. Latest origin/main remained bf99bd6. Client header/footer/icon now use the same symbol and passed real production desktop/mobile rendering plus the combined browser suite. Admin authenticated runtime and final hosted human acceptance are not claimed. The original worker findings below are retained as historical evidence.
+
 - Task: **F034C**, dispatch `task_98f118fbf32c`; human requester: Geondong Kim; implementing agent: dispatched Admin worker; recorded **2026-09-30 08:13 KST**.
 - Scope: Admin brand SVG and reusable mark, Admin audit header logo, Admin app icon, visual evidence, and Client integration instructions. Client checkout remained read-only. No auth, API, payment, wallet, or dependency change.
 - Repository: `web5five/Floww_Frontend_Admin`, branch `feature/admin-audit-console`, starting commit `49fb94ce77abadc15a11d4b461bb4daa4aa80e0d` (contains merged `origin/main` `bf99bd6`); resulting local commit: the F034C commit containing this report, recorded in the worker handoff. No push, PR, merge, or deploy by this worker.
