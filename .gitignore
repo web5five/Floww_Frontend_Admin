@@ -9,3 +9,6 @@ target/
 out/
 cache/
 .local/
+
+node_modules
+*.tsbuildinfo
