@@ -6,7 +6,7 @@
 
 ### The control room behind the flow.
 
-**A workspace for monitoring and managing Floww operations.**
+**An authenticated, read-only view of Floww task and account records.**
 
 [![Status](https://img.shields.io/badge/Status-In%20Progress-4261FF?style=for-the-badge)](#current-state)
 [![Admin](https://img.shields.io/badge/Floww-Admin-FFFF5C?style=for-the-badge&labelColor=1E1E1E)](#what-is-floww-admin)
@@ -52,21 +52,23 @@ It is intended to give authorized operators a clear view of platform activity an
 ## 🚧 Current State
 
 <!-- Update this section to reflect what is implemented in this repository. -->
-**Implementation status: to be confirmed.**
+The audit console has a Next.js 16.3.6 / React 19.3.0 source implementation and pinned npm lockfile. It uses Node 24.19+ and npm 11.17+ within Node 24. It signs in through the existing server `POST /api/v1/admin/auth/signin` endpoint, stores the issued ADMIN JWT in an HttpOnly, same-site BFF cookie, and calls only the new read-only server audit routes. No admin account is created here. The deployment owner must provision an authorized ADMIN account and configure `FLOWW_SERVER_URL` on the server side of this app.
 
-Add a concise summary here describing the current application source, supported runtime, build and test setup, Docker runtime, and CI status.
+The audit list shows persisted Tasks, with status and user filters. Detail pages show safe mandate, attempt, event, and TaskAccount fields using the same `taskId` and `attemptId` as the client API. Event JSON payloads, approval signatures, raw transactions, and login secrets are excluded. The audit interface has no payment, signing, approval, or mutation action.
+
+Local setup: copy `.env.example` to `.env.local` and set the backend URL, then run `npm ci`, `npm run typecheck`, `npm run lint`, and `npm run build`. The backend must have the matching F033C audit routes, a working database, and an ADMIN credential provisioned outside this repo. Running these commands locally does not establish hosted deployment or live admin access.
 
 ---
 
 ## 🗺️ Roadmap
 
-- [ ] Confirm the admin user roles and access boundaries.
-- [ ] Establish the application structure and supported runtime.
-- [ ] Pin dependencies and provide a reproducible installation flow.
-- [ ] Add placeholder-only environment variable examples.
-- [ ] Implement the operational overview and request/order views.
-- [ ] Add access control for administrative actions.
-- [ ] Add a real build and test workflow.
+- [x] Use the existing ADMIN role and ADMIN audience for sign-in and audit access.
+- [x] Establish the read-only application structure and Node 24 runtime.
+- [x] Pin dependencies and provide a lockfile for reproducible installation.
+- [x] Add placeholder-only environment variable examples.
+- [x] Implement task, attempt, event, and account inspection.
+- [x] Keep all audit requests behind the admin BFF session.
+- [ ] Verify reproducible install, build, and focused checks in CI.
 - [ ] Verify startup and health in the intended environment.
 - [ ] Deploy the admin app and add its live URL above.
 
