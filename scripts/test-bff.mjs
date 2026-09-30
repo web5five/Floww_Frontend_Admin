@@ -22,6 +22,7 @@ const upstream = createServer(async (request, response) => {
     assert.equal(request.headers.authorization, undefined);
     if (signInMode === "redirect") { response.writeHead(307, { Location: `http://127.0.0.1:${divertedPort}/capture` }).end(); return; }
     for await (const chunk of request) { void chunk; /* consume without logging credentials */ }
+    if (signInMode === "cold") await delay(10500);
     response.setHeader("Content-Type", "application/json");
     response.end(JSON.stringify({ accessToken: token, tokenType: "Bearer", expiresIn: 1800,
       user: { userId: "11111111-1111-4111-8111-111111111111", role: signInMode === "user" ? "USER" : "ADMIN" } }));
@@ -87,7 +88,7 @@ try {
   assert.equal(result.status, 503);
   assert.equal(unexpectedRedirectCalls, 0);
 
-  signInMode = "ok";
+  signInMode = "cold";
   result = await fetch(`${root}/api/session`, { method: "POST", headers: { Origin: root, "Content-Type": "application/json" }, body });
   assert.equal(result.status, 200);
   assert.equal(await result.text(), '{"ok":true}');
@@ -97,6 +98,7 @@ try {
   assert.equal(result.headers.get("x-vercel-protection-bypass"), null);
   const cookie = (result.headers.get("set-cookie") ?? "").split(";")[0];
   assert.ok(cookie);
+  signInMode = "ok";
 
   result = await fetch(`${root}/api/audit/tasks`, { headers: { Cookie: cookie } });
   assert.equal(result.status, 200);
