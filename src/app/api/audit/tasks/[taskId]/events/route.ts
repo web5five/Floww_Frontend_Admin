@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { adminGet } from "@/lib/server";
 import { validId } from "@/lib/validation";
 
+export const maxDuration = 30;
+
 export async function GET(request: NextRequest, context: { params: Promise<{ taskId: string }> }) {
   const { taskId } = await context.params;
   const q = request.nextUrl.searchParams;
