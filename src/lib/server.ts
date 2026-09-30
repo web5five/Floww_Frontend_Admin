@@ -30,7 +30,8 @@ export async function adminGet(path: string): Promise<NextResponse> {
   const url = upstreamUrl(path);
   if (!url) return NextResponse.json({ error: "SERVICE_UNAVAILABLE" }, { status: 503, headers: { "Cache-Control": "no-store" } });
   try {
-    const result = await fetch(url, { method: "GET", headers: upstreamHeaders(token), cache: "no-store", redirect: "error", signal: AbortSignal.timeout(10000) });
+    // A cold backend audit request can outlast the 10s login timeout.
+    const result = await fetch(url, { method: "GET", headers: upstreamHeaders(token), cache: "no-store", redirect: "error", signal: AbortSignal.timeout(20000) });
     const body = result.ok ? await result.json() : { error: result.status === 401 ? "SESSION_EXPIRED" : result.status === 403 ? "ACCESS_DENIED" : result.status === 404 ? "NOT_FOUND" : "SERVICE_UNAVAILABLE" };
     const response = NextResponse.json(body, { status: result.ok ? 200 : [401, 403, 404].includes(result.status) ? result.status : 503, headers: { "Cache-Control": "no-store" } });
     if (result.status === 401) response.cookies.delete(SESSION);

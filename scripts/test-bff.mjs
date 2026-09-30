@@ -29,6 +29,7 @@ const upstream = createServer(async (request, response) => {
   }
   assert.equal(request.headers.authorization, `Bearer ${token}`);
   if (auditMode === "redirect") { response.writeHead(307, { Location: `http://127.0.0.1:${divertedPort}/capture` }).end(); return; }
+  if (auditMode === "cold") await delay(10500);
   response.setHeader("Content-Type", "application/json");
   response.end(JSON.stringify({ tasks: [], total: 0, page: 0, limit: 20 }));
 });
@@ -102,6 +103,11 @@ try {
   assert.equal((await result.json()).total, 0);
   assert.equal(result.headers.get("cache-control"), "no-store");
   assert.equal(result.headers.get("x-vercel-protection-bypass"), null);
+
+  auditMode = "cold";
+  result = await fetch(`${root}/api/audit/tasks`, { headers: { Cookie: cookie } });
+  assert.equal(result.status, 200);
+  assert.equal((await result.json()).total, 0);
 
   auditMode = "redirect";
   result = await fetch(`${root}/api/audit/tasks`, { headers: { Cookie: cookie } });

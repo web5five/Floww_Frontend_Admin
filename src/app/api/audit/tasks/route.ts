@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminGet } from "@/lib/server";
 
+export const maxDuration = 30;
+
 const statuses = new Set(["DRAFT", "AWAITING_APPROVAL", "ACTIVE", "EXECUTING", "COMPLETED", "DECLINED", "FAILED", "EXPIRED", "CANCELLED"]);
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const decimal = /^(0|[1-9][0-9]*)$/;
