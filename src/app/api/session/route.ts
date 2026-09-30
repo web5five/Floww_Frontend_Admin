@@ -3,6 +3,8 @@ import { SESSION, upstreamHeaders, upstreamUrl } from "@/lib/server";
 
 const noStore = { "Cache-Control": "no-store" };
 
+export const maxDuration = 30;
+
 function sameOrigin(request: NextRequest): boolean {
   try {
     const origin = new URL(request.headers.get("origin") ?? "");
@@ -48,7 +50,7 @@ export async function POST(request: NextRequest) {
   try {
     const headers = upstreamHeaders();
     headers.set("Content-Type", "application/json");
-    const upstream = await fetch(url, { method: "POST", headers, body: JSON.stringify({ email: body.email, password: body.password }), cache: "no-store", redirect: "error", signal: AbortSignal.timeout(10000) });
+    const upstream = await fetch(url, { method: "POST", headers, body: JSON.stringify({ email: body.email, password: body.password }), cache: "no-store", redirect: "error", signal: AbortSignal.timeout(20000) });
     if (!upstream.ok) return NextResponse.json({ error: upstream.status === 401 ? "INVALID_CREDENTIALS" : upstream.status === 403 ? "ACCESS_DENIED" : "SERVICE_UNAVAILABLE" }, { status: upstream.status === 401 ? 401 : upstream.status === 403 ? 403 : 503, headers: noStore });
     const session: unknown = await upstream.json();
     if (!session || typeof session !== "object") throw new Error("Invalid session response");
