@@ -86,6 +86,7 @@ try {
     }
     const match = url.pathname.match(/^\/api\/audit\/tasks\/([^/]+)(?:\/(events|account))?$/);
     if (!match) return route.fulfill({ status: 404, body: '{}' });
+    if (mode === "selection_401" || mode === "selection_403") return route.fulfill({ status: mode === "selection_401" ? 401 : 403, contentType: "application/json", body: '{}' });
     const [, id, leaf] = match;
     if (mode === "race" && id === ids.denied && !leaf) await delay(400);
     if (leaf === "events") {
@@ -168,6 +169,13 @@ try {
   await page.getByRole("heading", { name: "Monthly refill request" }).waitFor();
   await page.getByText("계정 증거를 불러올 수 없습니다.").waitFor();
   assert.equal(await page.locator(".dashboard-step--unknown").count() >= 2, true, "account error cannot complete payment or fulfillment");
+  mode = "selection_401";
+  await page.getByRole("button", { name: "새로고침" }).click();
+  await page.getByRole("alert").getByRole("link", { name: "로그인" }).waitFor();
+  assert.equal(await page.getByRole("heading", { name: "Monthly refill request" }).count(), 0, "expired selection cannot leave stale evidence visible");
+  mode = "selection_403";
+  await page.getByRole("button", { name: "새로고침" }).click();
+  await page.getByRole("alert").getByText("이 계정은 관리자 감사 기록에 접근할 수 없습니다.").waitFor();
   mode = "empty";
   await page.getByRole("button", { name: "새로고침" }).click();
   await page.getByText("기록된 작업이 없습니다.").first().waitFor();

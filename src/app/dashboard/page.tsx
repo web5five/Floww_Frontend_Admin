@@ -34,8 +34,9 @@ async function readCount(status: string | null, signal: AbortSignal) {
   return { value: count, error: result.error ?? (count === null ? 503 : null) };
 }
 
-function accessStatus(overview: Overview): number | null {
-  const errors = [...Object.values(overview.counts).map(value => value.error), overview.recent.error];
+function accessStatus(overview: Overview, selection: Selection | null = null): number | null {
+  const errors = [...Object.values(overview.counts).map(value => value.error), overview.recent.error,
+    selection?.detail.error, selection?.events.error, selection?.account.error];
   return errors.includes(401) ? 401 : errors.includes(403) ? 403 : null;
 }
 
@@ -134,8 +135,8 @@ export default function Dashboard() {
   async function signOut() { await fetch("/api/session", { method: "DELETE", cache: "no-store" }); router.replace("/login"); }
 
   const summary = overview ? deriveSummary(overview.counts) : null;
-  const access = overview ? accessStatus(overview) : null;
   const selected = selection?.taskId === selectedId ? selection : null;
+  const access = overview ? accessStatus(overview, selected) : null;
   const detail = selected?.detail.error === null ? selected.detail.data : null;
   const account = selected?.account.error === null ? selected.account.data : undefined;
   const evidence = detail ? deriveEvidence(detail, account) : null;
