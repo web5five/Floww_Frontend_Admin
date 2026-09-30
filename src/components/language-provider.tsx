@@ -8,26 +8,34 @@ type LocaleContextValue = { language: Language; setLanguage: (language: Language
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 const languageChanged = "floww-admin-language-changed";
 
-function readLanguage(): Language {
-  const saved = window.localStorage.getItem(languageStorageKey);
-  return saved === "ko" ? "ko" : "en";
+function readLanguage(fallback: Language): Language {
+  try {
+    const saved = window.localStorage.getItem(languageStorageKey);
+    if (saved === "ko" || saved === "en") return saved;
+  } catch { /* cookie/server language remains available */ }
+  return fallback;
 }
-function serverLanguage(): Language { return "en"; }
 function subscribe(callback: () => void): () => void {
   window.addEventListener("storage", callback);
   window.addEventListener(languageChanged, callback);
   return () => { window.removeEventListener("storage", callback); window.removeEventListener(languageChanged, callback); };
 }
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const language = useSyncExternalStore(subscribe, readLanguage, serverLanguage);
+export function LanguageProvider({ children, initialLanguage }: { children: React.ReactNode; initialLanguage: Language }) {
+  const language = useSyncExternalStore(subscribe, () => readLanguage(initialLanguage), () => initialLanguage);
   const pathname = usePathname();
   useEffect(() => {
+    if (document.documentElement.dataset.localePending && language !== readLanguage(initialLanguage)) return;
     document.documentElement.lang = language;
     document.title = messages[language].pageTitle;
     document.querySelector('meta[name="description"]')?.setAttribute("content", messages[language].pageDescription);
-  }, [language, pathname]);
-  function setLanguage(next: Language) { window.localStorage.setItem(languageStorageKey, next); window.dispatchEvent(new Event(languageChanged)); }
+    delete document.documentElement.dataset.localePending;
+  }, [initialLanguage, language, pathname]);
+  function setLanguage(next: Language) {
+    try { window.localStorage.setItem(languageStorageKey, next); } catch { /* cookie still persists */ }
+    document.cookie = `${languageStorageKey}=${next}; Path=/; Max-Age=31536000; SameSite=Strict${location.protocol === "https:" ? "; Secure" : ""}`;
+    window.dispatchEvent(new Event(languageChanged));
+  }
   return <LocaleContext.Provider value={{ language, setLanguage, t: key => messages[language][key], status: value => statusLabel(value, language), date: value => formatDate(value, language) }}>{children}</LocaleContext.Provider>;
 }
 

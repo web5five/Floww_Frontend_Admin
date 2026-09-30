@@ -55,7 +55,9 @@ The audit console has a Next.js 16.3.6 / React 19.3.0 source implementation and 
 
 The audit list shows persisted Tasks, with status and user filters. Detail pages show safe mandate, attempt, event, and TaskAccount fields using the same `taskId` and `attemptId` as the client API. Event JSON payloads, approval signatures, raw transactions, and login secrets are excluded. The audit interface has no payment, signing, approval, or mutation action. A language setting on login and the audit header persists Korean or English in this browser. It changes display text and KST dates; API identifiers, addresses, hashes, reason codes, and request values stay canonical.
 
-The `origin/main` release at `74fe6f40c263735c7cfb705eccb447e2c88bfbfb` was reported READY at the live URL above on 2026-09-30. A public GET returned HTTP 200 for `/login` and `/icon.svg`; an unauthenticated GET to `/api/audit/tasks` returned HTTP 401. These checks confirm serving and the anonymous access boundary only. Authorized operator login and inspection of live records remain pending deployment-owner ADMIN provisioning and verification. The locale work in this branch is local until separately reviewed and deployed.
+The local `feature/admin-operations-dashboard` branch adds an operations overview after ADMIN sign-in. It reads unfiltered and status-filtered Task totals through bounded list requests, shows up to five tasks from the first page ordered by creation time, and loads detail, first-page events, and account evidence only for the selected Task. Counts are separate reads, with refresh time and partial failures shown; null evidence is not reported as zero or completed. There is no server projection for global model usage, cost, revenue, or payment totals, so the overview does not claim them. The layout follows the supplied desktop/mobile concept without copying its illustrative people, dates, amounts, or events. [F040 local evidence](reports/F040_ADMIN_DASHBOARD.md) records the fixture and verification limits.
+
+The `origin/main` release at `74fe6f40c263735c7cfb705eccb447e2c88bfbfb` was reported READY at the live URL above on 2026-09-30. A public GET returned HTTP 200 for `/login` and `/icon.svg`; an unauthenticated GET to `/api/audit/tasks` returned HTTP 401. The deployment owner subsequently reported an authorized ADMIN sign-in returning HTTP 200. Its audit request initially returned HTTP 503 on a cold path exceeding the BFF timeout; the deployment owner is handling that separate timeout fix and reported a direct backend HTTP 200 and retry HTTP 200. These observations do not establish stable hosted record browsing or operator acceptance. The dashboard and corrected locale work in this branch are local until separately reviewed and deployed.
 
 [F038 local check record and 1440/390 screenshots](reports/F038_ADMIN_LOCALE.md) distinguish the production build, fixture-backed UI checks, live anonymous HTTP responses, and pending operator acceptance.
 
@@ -74,8 +76,8 @@ Local setup: copy `.env.example` to `.env.local` and set the backend URL, then r
 - [x] Verify a clean locked install, standard build, lint, and BFF fixture checks on the earlier Admin release ([F034C controller verification](reports/F034C_BRAND_VECTOR.md)).
 - [x] Verify the main release serves login and icon with HTTP 200 and rejects anonymous audit with HTTP 401.
 - [x] Deploy the main release and add its live URL above.
-- [ ] Provision and verify an authorized operator login against the deployed backend.
-- [ ] Review, integrate, and deploy the Korean/English Admin settings branch.
+- [ ] Independently verify stable authorized operator audit browsing after the deployment-owned timeout fix.
+- [ ] Review, integrate, and deploy the dashboard and Korean/English Admin settings branch.
 
 ---
 
@@ -104,7 +106,7 @@ Keep secrets and private team sources out of Git.
 |---|---|
 | 🌐 Integration hub | [web5five/Floww](https://github.com/web5five/Floww) |
 | ⚙️ Server integration issue | [Floww_Server — Issue #1](https://github.com/web5five/Floww_Server/issues/1) |
-| 🚀 Live admin | [floww-admin-demo.vercel.app](https://floww-admin-demo.vercel.app) — operator login pending |
+| 🚀 Live admin | [floww-admin-demo.vercel.app](https://floww-admin-demo.vercel.app) — audit browsing verification pending |
 
 ---
 

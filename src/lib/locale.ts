@@ -5,7 +5,7 @@ export const messages = {
     tagline: "See every decision in the flow.", signInTitle: "Admin sign in", restricted: "Access is limited to authorized operators.",
     email: "Email", password: "Password", signingIn: "Signing in…", signIn: "Sign in",
     invalidCredentials: "Invalid admin credentials.", accountUnavailable: "Admin access is unavailable for this account.", signInUnavailable: "Sign-in is unavailable. Try again.",
-    taskAudit: "Task audit", signOut: "Sign out", auditIntro: "Read the persisted task, decision, and account trail.", refresh: "Refresh",
+    overview: "Overview", taskAudit: "Task audit", signOut: "Sign out", auditIntro: "Read the persisted task, decision, and account trail.", refresh: "Refresh",
     status: "Status", allStatuses: "All statuses", userId: "User ID", filterUser: "Filter by user ID", apply: "Apply", invalidUserId: "Enter a valid user ID.",
     loadingTasks: "Loading task records…", tasksFound: "tasks found", noTasks: "No task records match these filters.", task: "Task", purpose: "Purpose",
     userWallet: "User / wallet", cap: "Cap · base units", updated: "Updated", previous: "Previous", next: "Next", page: "Page", scrollTable: "Scroll sideways to see all columns.",
@@ -28,7 +28,7 @@ export const messages = {
     tagline: "흐름 속 모든 결정을 확인하세요.", signInTitle: "관리자 로그인", restricted: "승인된 운영자만 접근할 수 있습니다.",
     email: "이메일", password: "비밀번호", signingIn: "로그인 중…", signIn: "로그인",
     invalidCredentials: "관리자 인증 정보가 올바르지 않습니다.", accountUnavailable: "이 계정은 관리자 권한이 없습니다.", signInUnavailable: "로그인할 수 없습니다. 다시 시도해 주세요.",
-    taskAudit: "작업 감사", signOut: "로그아웃", auditIntro: "저장된 작업, 결정 및 계정 이력을 확인합니다.", refresh: "새로고침",
+    overview: "개요", taskAudit: "작업 감사", signOut: "로그아웃", auditIntro: "저장된 작업, 결정 및 계정 이력을 확인합니다.", refresh: "새로고침",
     status: "상태", allStatuses: "전체 상태", userId: "사용자 ID", filterUser: "사용자 ID로 필터", apply: "적용", invalidUserId: "올바른 사용자 ID를 입력하세요.",
     loadingTasks: "작업 기록을 불러오는 중…", tasksFound: "개 작업", noTasks: "필터와 일치하는 작업 기록이 없습니다.", task: "작업", purpose: "목적",
     userWallet: "사용자 / 지갑", cap: "한도 · 기본 단위", updated: "수정 시각", previous: "이전", next: "다음", page: "페이지", scrollTable: "옆으로 스크롤하면 나머지 열을 볼 수 있습니다.",
@@ -52,9 +52,25 @@ export type MessageKey = keyof typeof messages.en;
 export const languageStorageKey = "floww_admin_language";
 
 export const statusLabels: Record<Language, Record<string, string>> = {
-  en: {},
-  ko: { DRAFT: "초안", AWAITING_APPROVAL: "승인 대기", ACTIVE: "활성", EXECUTING: "실행 중", COMPLETED: "완료", DECLINED: "거절", FAILED: "실패", EXPIRED: "만료", CANCELLED: "취소", PENDING: "대기", APPROVED: "승인", REJECTED: "거절", REVIEWED: "검토 완료", UNKNOWN: "미확인" },
+  en: { DRAFT: "Draft", AWAITING_APPROVAL: "Awaiting approval", ACTIVE: "Active", EXECUTING: "Executing", COMPLETED: "Completed", DECLINED: "Declined", FAILED: "Failed", EXPIRED: "Expired", CANCELLED: "Cancelled", PENDING: "Pending", APPROVED: "Approved", REJECTED: "Rejected", REVIEWED: "Reviewed", UNKNOWN: "Unknown", ALLOW: "Allowed", DENY: "Denied", VERIFIED: "Verified", NOT_ATTEMPTED: "Not attempted", POLICY_ALLOWED: "Policy allowed", BLOCKED: "Blocked", ORDERED: "Ordered", SUPERSEDED: "Superseded", PREPARED: "Prepared", BOUND: "Bound", ACCOUNT_PREPARED: "Account prepared", ACCOUNT_BOUND: "Account bound", APPROVAL_UNKNOWN: "Approval unknown", PAYMENT_UNKNOWN: "Payment unknown", FULFILLMENT_UNKNOWN: "Fulfillment unknown", PAID: "Paid", REVERTED: "Reverted", SIGNED: "Signed" },
+  ko: { DRAFT: "초안", AWAITING_APPROVAL: "승인 대기", ACTIVE: "활성", EXECUTING: "실행 중", COMPLETED: "완료", DECLINED: "거절", FAILED: "실패", EXPIRED: "만료", CANCELLED: "취소", PENDING: "대기", APPROVED: "승인", REJECTED: "거절", REVIEWED: "검토 완료", UNKNOWN: "미확인", ALLOW: "허용", DENY: "거부", VERIFIED: "검증됨", NOT_ATTEMPTED: "시도 없음", POLICY_ALLOWED: "정책 허용", BLOCKED: "차단", ORDERED: "주문됨", SUPERSEDED: "대체됨", PREPARED: "준비됨", BOUND: "연결됨", ACCOUNT_PREPARED: "계정 준비됨", ACCOUNT_BOUND: "계정 연결됨", APPROVAL_UNKNOWN: "승인 미확인", PAYMENT_UNKNOWN: "결제 미확인", FULFILLMENT_UNKNOWN: "이행 미확인", PAID: "결제됨", REVERTED: "취소됨", SIGNED: "서명됨" },
 };
+
+const codeLabels: Record<Language, Record<string, string>> = {
+  en: {
+    ALLOW: "Allowed", DENY: "Denied", MANDATE_DRAFTED: "Mandate drafted", MANDATE_REVISED: "Mandate revised", MANDATE_CONFIRMED: "Mandate confirmed", TASK_STATUS_CHANGED: "Task status changed", POLICY_DECIDED: "Policy decided", APPROVAL_REQUESTED: "Approval requested", ORDER_CREATED: "Order created", QUOTES_COLLECTED: "Quotes collected", PAYMENT_VERIFIED: "Payment verified", FULFILLMENT_VERIFIED: "Fulfillment verified",
+    MANDATE_EXPIRED: "Mandate expired", UNKNOWN_QUOTE_ID: "Unknown quote", QUOTE_STALE: "Quote expired", RECIPIENT_NOT_ALLOWED: "Recipient not allowed", ITEM_NOT_ALLOWED: "Item not allowed", OUT_OF_STOCK: "Out of stock", CURRENCY_MISMATCH: "Currency mismatch", BUDGET_EXCEEDED: "Budget exceeded", NO_VALID_CANDIDATE: "No valid candidate", USER_REJECTED: "Rejected by user", USER_CANCELLED: "Cancelled by user", user: "User", server: "Server",
+  },
+  ko: {
+    ALLOW: "허용", DENY: "거부", MANDATE_DRAFTED: "위임 초안 작성", MANDATE_REVISED: "위임 수정", MANDATE_CONFIRMED: "위임 확정", TASK_STATUS_CHANGED: "작업 상태 변경", POLICY_DECIDED: "정책 판정", APPROVAL_REQUESTED: "승인 요청", ORDER_CREATED: "주문 생성", QUOTES_COLLECTED: "견적 수집", PAYMENT_VERIFIED: "결제 검증", FULFILLMENT_VERIFIED: "이행 검증",
+    MANDATE_EXPIRED: "위임 만료", UNKNOWN_QUOTE_ID: "알 수 없는 견적", QUOTE_STALE: "견적 만료", RECIPIENT_NOT_ALLOWED: "허용되지 않은 수신자", ITEM_NOT_ALLOWED: "허용되지 않은 항목", OUT_OF_STOCK: "재고 없음", CURRENCY_MISMATCH: "통화 불일치", BUDGET_EXCEEDED: "예산 초과", NO_VALID_CANDIDATE: "유효한 후보 없음", USER_REJECTED: "사용자 거절", USER_CANCELLED: "사용자 취소", user: "사용자", server: "서버",
+  },
+};
+
+export function codeLabel(value: string | null | undefined, language: Language): string {
+  if (!value) return "—";
+  return codeLabels[language][value] ?? statusLabels[language][value] ?? (language === "ko" ? "미분류 코드" : "Unrecognized code");
+}
 
 export function statusLabel(value: string | null | undefined, language: Language): string {
   if (!value) return "—";

@@ -21,7 +21,7 @@ export default function Login() {
       const response = await fetch("/api/session", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }), cache: "no-store" });
       if (!response.ok) { setError(response.status === 401 ? "invalidCredentials" : response.status === 403 ? "accountUnavailable" : "signInUnavailable"); return; }
       setPassword("");
-      router.replace("/audit");
+      router.replace("/dashboard");
     } catch { setError("signInUnavailable"); }
     finally { setBusy(false); }
   }
