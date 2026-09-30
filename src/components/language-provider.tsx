@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import { Language, languageStorageKey, MessageKey, messages, statusLabel, formatDate } from "@/lib/locale";
 
 type LocaleContextValue = { language: Language; setLanguage: (language: Language) => void; t: (key: MessageKey) => string; status: (value: string | null | undefined) => string; date: (value: string | null | undefined) => string };
@@ -20,11 +21,12 @@ function subscribe(callback: () => void): () => void {
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const language = useSyncExternalStore(subscribe, readLanguage, serverLanguage);
+  const pathname = usePathname();
   useEffect(() => {
     document.documentElement.lang = language;
     document.title = messages[language].pageTitle;
     document.querySelector('meta[name="description"]')?.setAttribute("content", messages[language].pageDescription);
-  }, [language]);
+  }, [language, pathname]);
   function setLanguage(next: Language) { window.localStorage.setItem(languageStorageKey, next); window.dispatchEvent(new Event(languageChanged)); }
   return <LocaleContext.Provider value={{ language, setLanguage, t: key => messages[language][key], status: value => statusLabel(value, language), date: value => formatDate(value, language) }}>{children}</LocaleContext.Provider>;
 }

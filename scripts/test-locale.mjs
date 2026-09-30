@@ -61,6 +61,7 @@ try {
   await page.getByRole("alert").getByText("Your admin session has expired. Sign in again.").waitFor();
   await page.getByLabel("Language settings").selectOption("ko");
   await page.getByRole("alert").getByText("관리자 세션이 만료되었습니다. 다시 로그인하세요.").waitFor();
+  assert.equal(await page.title(), "Floww | 관리자 감사");
 
   let lastQuery = "";
   await page.route("**/api/audit/tasks?*", async route => {
@@ -87,6 +88,7 @@ try {
   await page.getByRole("link", { name: taskId }).click();
   await page.getByRole("heading", { name: "감사 상세" }).waitFor();
   await page.getByText("기록된 시도가 없습니다.").waitFor();
+  assert.equal(await page.title(), "Floww | 관리자 감사");
   await noOverflow(page, "detail 390");
   await page.screenshot({ path: join(output, "detail_ko_390.png"), fullPage: true });
   await page.setViewportSize({ width: 320, height: 700 });
